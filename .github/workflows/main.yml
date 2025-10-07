@@ -4,15 +4,13 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
-    name: Build APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -21,14 +19,13 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build APK
+      - name: Build with Gradle
         run: |
           cd app
-          chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
         with:
-          name: MyGestionPro-APK
-          path: app/build/outputs/apk/debug/*.apk
+          name: app-release.apk
+          path: app/build/outputs/apk/release/app-release.apk
